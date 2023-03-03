@@ -1,5 +1,5 @@
 "use strict"
-
+//picking roasts and names from current menu//
 function renderCoffee(coffee) {
     var html = '<div class="coffee d-flex align-items-baseline mx-5" width:40%>';
     html += '<h2>' + coffee.name + '</h2>';
@@ -10,6 +10,7 @@ function renderCoffee(coffee) {
 }
 
 function renderCoffees(coffees) {
+    console.log(coffees);
     var html = '';
     for(var i = coffees.length - 1; i >= 0; i--) {
         html += renderCoffee(coffees[i]);
@@ -52,9 +53,7 @@ var coffees = [
 var tbody = document.querySelector('#coffees');
 var submitButton = document.querySelector('#submit');
 var roastSelection = document.querySelector('#roast-selection');
-
 var coffeeSelection = document.querySelector('#coffee-selection')
-
 
 coffeeSelection.addEventListener('input', e => {
     var choosenCoffee = []
@@ -70,5 +69,34 @@ coffeeSelection.addEventListener('input', e => {
         tbody.innerHTML = renderCoffees(choosenCoffee);
 })
 tbody.innerHTML = renderCoffees(coffees.reverse());
-
 submitButton.addEventListener('click', updateCoffees);
+
+
+// submit button  listens for click
+// on click of submit -> trigger 'addCoffees()'
+// // grab value of input fields
+// // create a new coffee object with those values (id, name, roast)
+// // push the new coffee to existing coffees
+// // set local storage to updated list
+// // renderCoffees ( updated coffees)
+//
+
+function addCoffees(e) {
+    e.preventDefault();
+    console.log('add coffee submit clicked!')
+    var newRoast = document.querySelector("#added-roast-selection").value;
+    console.log(newRoast);
+    var newCoffee = document.querySelector("#added-coffee-selection").value;
+    console.log(newCoffee)
+    var newCoffees = {id: coffees.length + 1, name: newCoffee, roast: newRoast};
+    coffees.unshift(newCoffees);
+    console.log(coffees)
+    localStorage.setItem('renderCoffees', JSON.stringify(coffees));
+    var updatedCoffee = localStorage.getItem('renderCoffees');
+    tbody.innerHTML = renderCoffees(JSON.parse(updatedCoffee));
+}
+
+
+
+var submit2Button = document.getElementById("submit2");
+submit2Button.addEventListener("click", addCoffees);
